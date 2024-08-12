@@ -10,14 +10,25 @@ import fs from "fs"
         api_secret: process.env.CLOUDINARY_API_SECRET
         });
 
-        const uploadResult = await cloudinary.uploader
-        .upload(
-            'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', {
-                public_id: 'shoes',
+        const uploadFileOnCloud = async(filepath)=>{
+            try {
+                if(!filepath) return null;
+                const uploadResult = await cloudinary.uploader
+                .upload(
+                    'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', {
+                        public_id: 'shoes',
+                        resource_type:auto
+                    }
+               
+                )
+                console.log(uploadResult);
+                return uploadResult
+             } catch (error) {
+                fs.unlinkSync(filepath)
+                console.log("something went wrong" + error)
             }
-        )
-        .catch((error) => {
-            console.log(error);
-        });
-     console.log(uploadResult);
+           
+        } 
+
+       
 })();
